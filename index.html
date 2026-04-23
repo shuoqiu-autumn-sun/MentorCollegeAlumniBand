@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join the Group</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --accent: #c8f544;
+      --text: #f0f0f0;
+      --muted: #777;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    /* Subtle noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Glow blob */
+    body::after {
+      content: '';
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(200,245,68,0.06) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+      animation: rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag {
+      display: inline-block;
+      background: rgba(200,245,68,0.12);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    input {
+      width: 100%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      padding: 14px 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 20px;
+    }
+
+    input:focus { border-color: var(--accent); }
+    input::placeholder { color: #444; }
+
+    button {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      padding: 15px;
+      cursor: pointer;
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    button:hover  { opacity: 0.88; transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    /* ── QR screen ── */
+    #qr-screen {
+      display: none;
+      text-align: center;
+      animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    #qr-screen h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    #qr-screen p {
+      color: var(--muted);
+      font-size: 14px;
+      margin-bottom: 28px;
+    }
+
+    .qr-wrapper {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      display: inline-block;
+      margin-bottom: 24px;
+    }
+
+    .qr-wrapper img {
+      display: block;
+      width: 220px;
+      height: 220px;
+      border-radius: 4px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* ── Decoy screen ── */
+    #decoy-screen {
+      display: none;
+      text-align: center;
+      animation: rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 24px;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #decoy-screen h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    #decoy-screen p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+
+    <!-- ── Name entry ── -->
+    <div id="entry-screen">
+      <div class="tag">✦ Group invite</div>
+      <h1>Who's <span>joining?</span></h1>
+      <p class="subtitle">Enter your name to get the link to the group chat.</p>
+      <label for="name-input">Your name</label>
+      <input id="name-input" type="text" placeholder="First and last name" autocomplete="off" />
+      <button onclick="handleSubmit()">Get the link →</button>
+    </div>
+
+    <!-- ── QR code screen ── -->
+    <div id="qr-screen">
+      <h2>You're in! 🎉</h2>
+      <p>Scan the QR code below to join the group chat.</p>
+      <div class="qr-wrapper">
+        <!--
+          REPLACE the src below with your Instagram groupchat QR code image.
+          Either:
+            a) Upload your QR image to the same GitHub repo and use: src="your-qr.png"
+            b) Or paste a hosted image URL here
+        -->
+        <img src="your-instagram-qr.png" alt="Group chat QR code" />
+      </div>
+      <p class="hint">Open your camera and point it at the code</p>
+    </div>
+
+    <!-- ── Decoy screen ── -->
+    <div id="decoy-screen">
+      <div class="spinner"></div>
+      <h2>Website under development</h2>
+      <p>We're still setting things up.<br/>Sit tight — check back soon! 🔧</p>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Blacklist (case-insensitive, trimmed) ──
+    const BLACKLIST = ["ian hoare"];
+
+    function handleSubmit() {
+      const raw   = document.getElementById("name-input").value.trim();
+      const name  = raw.toLowerCase();
+
+      if (!raw) {
+        document.getElementById("name-input").focus();
+        return;
+      }
+
+      const isBlocked = BLACKLIST.some(b => name.includes(b) || b.includes(name));
+
+      document.getElementById("entry-screen").style.display = "none";
+
+      if (isBlocked) {
+        document.getElementById("decoy-screen").style.display = "block";
+      } else {
+        document.getElementById("qr-screen").style.display = "block";
+      }
+    }
+
+    // Allow pressing Enter to submit
+    document.getElementById("name-input")
+      .addEventListener("keydown", e => { if (e.key === "Enter") handleSubmit(); });
+  </script>
+</body>
+</html>
