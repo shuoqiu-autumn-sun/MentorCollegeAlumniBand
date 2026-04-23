@@ -9,17 +9,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #0d0d0d;
-      --surface: #161616;
-      --border: #2a2a2a;
-      --accent: #c8f544;
-      --text: #f0f0f0;
-      --muted: #777;
+      --bg: #f0f0f0;
+      --surface: #142750;
+      --border: #142750;
+      --accent: #feab05;
+      --text: #000000;
+      --muted: #d1cdff;
+      --whose: #f0f0f0
     }
 
     body {
       background: var(--bg);
-      color: var(--text);
+      color: var(--whose);
       font-family: 'DM Sans', sans-serif;
       min-height: 100vh;
       display: flex;
@@ -226,24 +227,17 @@
       <h1>Who's <span>joining?</span></h1>
       <p class="subtitle">Enter your name to get the link to the group chat.</p>
       <label for="name-input">Your name</label>
-      <input id="name-input" type="text" placeholder="First and last name" autocomplete="off" />
+      <input id="name-input" type="text" placeholder="Enter name: First Last" autocomplete="off" />
       <button onclick="handleSubmit()">Get the link →</button>
     </div>
 
     <!-- ── QR code screen ── -->
     <div id="qr-screen">
-      <h2>You're in! 🎉</h2>
-      <p>Scan the QR code below to join the group chat.</p>
+      <p>Join us in preparing a surprise for Mr. Hoare</p>
+      <p>Scan the Instagram groupchat link below!</p>
       <div class="qr-wrapper">
-        <!--
-          REPLACE the src below with your Instagram groupchat QR code image.
-          Either:
-            a) Upload your QR image to the same GitHub repo and use: src="your-qr.png"
-            b) Or paste a hosted image URL here
-        -->
-        <img src="your-instagram-qr.png" alt="Group chat QR code" />
+        <img src="C:\Users\Shuoq\Downloads\InstagramQRCode.jpg" alt="Group chat QR code" />
       </div>
-      <p class="hint">Open your camera and point it at the code</p>
     </div>
 
     <!-- ── Decoy screen ── -->
