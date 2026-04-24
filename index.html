@@ -240,8 +240,7 @@
         padding: 14px 16px;
         margin-bottom: 20px;
       ">
-        <option value="">Select one</option>
-        <option value="student">Student</option>
+        <option value="Select one">Select</option>
         <option value="alumni">Alumni</option>
         <option value="teacher">Teacher</option>
       </select>
@@ -255,6 +254,12 @@
       <div class="qr-wrapper">
         <img src="InstagramQRCode.jpg" alt="Group chat QR code" />
       </div>
+      <p>
+        Or join using this link:<br>
+        <a href="https://ig.me/j/AbbHGLnWUYL768dR/" target="_blank" style="color: var(--muted);">
+          https://ig.me/j/AbbHGLnWUYL768dR/
+        </a>
+      </p>
     </div>
 
     <!-- ── Decoy screen ── -->
@@ -271,22 +276,24 @@
     const BLACKLIST = ["ian hoare"];
 
     function handleSubmit() {
-      const raw   = document.getElementById("name-input").value.trim();
-      const role  = document.getElementById("role-select").value;
-      const name  = raw.toLowerCase();
+      const raw  = document.getElementById("name-input").value.trim();
+      const role = document.getElementById("role-select").value;
+      const name = raw.toLowerCase();
 
       if (!raw || !role) {
         return;
       }
 
-      const isIanHoare = name.includes("ian hoare");
+      // Normalize spacing to avoid bypass like "ian   hoare"
+      const normalized = name.replace(/\s+/g, " ");
+
+      const isIanHoare = normalized === "ian hoare";
 
       document.getElementById("entry-screen").style.display = "none";
 
-      // Only block if BOTH teacher AND Ian Hoare
-      if (isIanHoare && role === "teacher") {
+      if (isIanHoare) {
         document.getElementById("decoy-screen").style.display = "block";
-        } else {
+      } else {
         document.getElementById("qr-screen").style.display = "block";
       }
     }
