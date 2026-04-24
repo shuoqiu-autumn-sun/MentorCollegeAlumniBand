@@ -228,6 +228,23 @@
       <p class="subtitle">Enter your name to get the link to the group chat.</p>
       <label for="name-input">Your name</label>
       <input id="name-input" type="text" placeholder="Enter name: First Last" autocomplete="off" />
+      <label for="role-select">I am a</label>
+      <select id="role-select" style="
+        width: 100%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 16px;
+        padding: 14px 16px;
+        margin-bottom: 20px;
+      ">
+        <option value="">Select one</option>
+        <option value="student">Student</option>
+        <option value="alumni">Alumni</option>
+        <option value="teacher">Teacher</option>
+      </select>
       <button onclick="handleSubmit()">Get the link →</button>
     </div>
 
@@ -236,18 +253,15 @@
       <p>Join us in preparing a surprise for Mr. Hoare</p>
       <p>Scan the Instagram groupchat link below!</p>
       <div class="qr-wrapper">
-        <img src="main/InstagramQRCode.jpg" alt="Group chat QR code" />
+        <img src="InstagramQRCode.jpg" alt="Group chat QR code" />
       </div>
-      <a href="https://ig.me/j/AbbHGLnWUYL768dR/" target="_blank" class="hint">
-        Or tap here to join the group chat
-      </a>
     </div>
 
     <!-- ── Decoy screen ── -->
     <div id="decoy-screen">
       <div class="spinner"></div>
-      <h2>Website under development</h2>
-      <p>We're still setting things up.<br/>Sit tight — check back soon! 🔧</p>
+      <h2>Notice</h2>
+      <p>We are currently only taking students, check in later!</p>
     </div>
 
   </div>
@@ -258,20 +272,21 @@
 
     function handleSubmit() {
       const raw   = document.getElementById("name-input").value.trim();
+      const role  = document.getElementById("role-select").value;
       const name  = raw.toLowerCase();
 
-      if (!raw) {
-        document.getElementById("name-input").focus();
+      if (!raw || !role) {
         return;
       }
 
-      const isBlocked = BLACKLIST.some(b => name.includes(b) || b.includes(name));
+      const isIanHoare = name.includes("ian hoare");
 
       document.getElementById("entry-screen").style.display = "none";
 
-      if (isBlocked) {
+      // Only block if BOTH teacher AND Ian Hoare
+      if (isIanHoare && role === "teacher") {
         document.getElementById("decoy-screen").style.display = "block";
-      } else {
+        } else {
         document.getElementById("qr-screen").style.display = "block";
       }
     }
